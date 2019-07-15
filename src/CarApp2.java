@@ -14,12 +14,11 @@ public class CarApp2 {
 		Scanner scnr = new Scanner(System.in);
 		int numOfCars = 3;
 		ArrayList<Car> carsList = new ArrayList<Car>();
-		carsList = getDisplyCarsData(numOfCars, scnr);
-		// int userPreferredCar = ;
-		processUserSelection(getUserPreferredCar(scnr), carsList, scnr);
+		carsList = getDisplyCarsData(numOfCars);
+		processUserSelection(getUserPreferredCar(carsList.size(), scnr), carsList, scnr);
 	}
 
-	public static ArrayList<Car> getDisplyCarsData(int numOfCars, Scanner scnr) {
+	public static ArrayList<Car> getDisplyCarsData(int numOfCars) {
 
 		ArrayList<Car> usedCars = new ArrayList<Car>();
 		int count = 0;
@@ -47,13 +46,19 @@ public class CarApp2 {
 		return usedCars;
 	}
 
-	public static int getUserPreferredCar(Scanner scnr) {
+	public static int getUserPreferredCar(int carsListSize, Scanner scnr) {
 		System.out.println();
 		int userPreferredCar = Validator.getInt(scnr, "Which car would you like?");
+		if (userPreferredCar == (carsListSize + 1)) {
+			System.out.println("\nHave a great day!");
+			System.exit(-1);
+		}
+
 		return userPreferredCar - 1;
 	}
 
 	public static void processUserSelection(int userPreferredCar, ArrayList<Car> carsList, Scanner scnr) {
+
 		int count = 0;
 		int quit;
 		String userWantsToBuy;
@@ -92,9 +97,11 @@ public class CarApp2 {
 					}
 				}
 				System.out.printf("%d. %-7s %n", count + 1, "Quit");
+
 			}
-			quit = getUserPreferredCar(scnr);
-		} while (!userWantsToBuy.equals("y") && quit != count + 1);
+
+			quit = getUserPreferredCar(carsList.size(), scnr);
+		} while (!userWantsToBuy.equalsIgnoreCase("y") || quit != count + 1);
 		System.out.println("\nHave a great day!");
 	}
 }
